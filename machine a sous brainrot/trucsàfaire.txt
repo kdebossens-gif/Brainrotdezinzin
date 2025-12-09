@@ -1,0 +1,9 @@
+-améliorer les animations
+-améliorer les animations de win (big win mega win ultra win)
+- faire une animation pour le quand tu tombes dans le bonus
+- améliorer la qualité des images 
+faire en sorte de pouvoir gérer sa mise
+ajouter des sons pour tous
+
+
+créer un logiciel qui permet de créer ta propre machine a sous
