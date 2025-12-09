@@ -16,6 +16,9 @@ const MIN_BET = 0.1;
 const MAX_BET = 100;
 const BET_STEP = 0.1;
 
+// Maximum win cap
+const MAX_WIN_PER_BONUS = 5000; // 5000× the bet amount per bonus round
+
 // --- Symbols: rebalanced weights and values (lower payouts, rarer big wins) ---
 const symbols = [
   // name, image, value (relative payout unit), weight (occurrence frequency)
@@ -1203,6 +1206,22 @@ async function spin() {
     if (freeSpins <= 0) {
       bonusActive = false;
       bonusConnections = 0;
+      
+      // Apply max win cap (5000× bet amount)
+      const maxWinAmount = betAmount * MAX_WIN_PER_BONUS;
+      if (currentBonusTotal > maxWinAmount) {
+        const cappedAmount = Math.round(maxWinAmount * 100) / 100;
+        // refund the excess to keep balance fair
+        const excess = currentBonusTotal - cappedAmount;
+        balance -= excess;
+        updateBalanceDisplay();
+        currentBonusTotal = cappedAmount;
+        if (resultDiv) {
+          resultDiv.textContent = `MAX WIN REACHED! ENVOIE PIED Bonus capped at ${formatNumber(maxWinAmount)} (${MAX_WIN_PER_BONUS}× bet)`;
+          resultDiv.style.color = "#FF6600";
+        }
+      }
+      
       showBonusSummary(currentBonusTotal);
       currentBonusTotal = 0;
     }
